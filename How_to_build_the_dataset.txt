@@ -1,0 +1,57 @@
+=============================================================================
+To select and download the data use the site:
+http://databank.worldbank.org
+
+Goto the page:
+http://databank.worldbank.org/data/views/variableSelection/selectvariables.aspx?source=world-development-indicators
+This pre-selects in item "Database" the base ": "World Development Indicators"
+(stay on the english version of the site, to avoid some possible problems in french due to accent in the column names)
+
+Then choose the countries, the variables (called series or also indicators) and the year (time) as described below.
+
+Click on section "Country" to unfold the selection details in this section. Then click on button "Countries" and click icon "select all" (it is the icon looking like a check box, not the button "All")
+(Caution if you use button "All" or "Aggregates", you will not get data per country.)
+
+Below on the page, in the section "Time", select one year (not too recent, not too far in the past)
+ex : 2016
+
+In the section Series: click the funnel icon to choose some filters to display a subset of the available series. Then click in the list on the left to select the series.
+
+To select the data format:
+Click on tab "LAYOUT" (upper-left part)
+In the section "Orientation" choose:
+Time: Page
+Series: Column
+Country: Row
+Click on "APPLY CHANGES".
+
+To download the data:
+Click on "Download Options" (upper-right)
+Choose in the list "Advanced Options"
+In tab "DOWNLOAD FORMAT" choose format: "Tabbed TXT"
+Then select:
+Export range: Entire dataset
+Data format: Table
+Variable format: both codes and names (to get codes AND long names for countries and indicators)
+NA preferences: Blank
+Text field delimiter: " (but this option seems to have no effect)
+Metadata: No
+
+Then click on the button "Download" (bottom-right)
+
+Two files are obtained:
+- one file containing the data, using one "TAB" (character tabulation) as field separator.
+- another file containing the definitions, codes and long names of the indicators.
+
+=============================================================================
+To read the data file:
+
+- suppress with a text editor the last lines of the data file that may contain information not related the the variable values (empty lines, date of last updated of the data, ...)
+
+- if needed, edit the names of the variables in the data file (on the first line) to use more compact names (keep the tabs as separator).
+
+- read the file (using tab as separator), check that the types of the variables have been recognized correctly (string and float).
+
+- suppress the variables having many missing values, and after this step suppress the objects still having at least one missing value.
+
+=============================================================================

@@ -1,0 +1,149 @@
+
+==============================================================
+GUIDELINES FOR THE REPORT
+==============================================================
+
+The report must cover the following tasks: attribute selection, object selection, clustering and classification (supervised classification). For each task, a minimal list of items to consider is given below, but other meaningful steps/techniques can be added.
+
+
+==============================================================
+Attribute selection
+===================
+
+* Remove attributes containing many missing values.
+
+* Remove attributes that seem redundant because of strong correlations.
+
+* Used derived attributes to exhibit variables that could be more pertinent (relative value, ratio, difference, relative variation, indicator combining several attributes, ...).
+
+* Choose a subset of the dimensions to focus on some aspects and/or to simplify the interpretations. For methods that use distances, reduce the number of dimensions between 4 and 6, and standardize the data if necessary.
+
+Remark: It is possible to complete the dataset with other sources.
+
+
+==============================================================
+Object selection
+================
+
+* Remove objects containing missing values (except if using methods that handle clearly the missing values).
+
+* Identified the outliers (exceptional objects, noise, ...) in 1D, 2D, n-dimensions. Keep track of them and eventually remove them.
+
+
+==============================================================
+Clustering
+==========
+
+* Look for clusters of globular shapes and of arbitrary shapes, using in particular K-means, hierarchical complete/single and DBSCAN.
+
+* Compute dendrograms for hierarchical clustering.
+
+* Determine good candidates for the number of clusters (using SSE, silhouette coefficient and grouping distance curves).
+
+* Study the stability of the K-means convergence.
+
+* Compare (using entropy or mutual entropy, and contingency tables) the content of the clusters to a known labelling or to the result of another clustering.
+
+* Describe the envelope (the borders) of the clusters using a decision tree (on a dataset having at least 4 dimensions).
+
+
+Remarks:
+
+- Removing outliers can improve the stability and the dispersion.
+
+- Clustering evaluation can be made by comparing SSE and silhouette coefficient obtain of the data to their values on random dataset or on partially randomize data.
+
+
+==============================================================
+Classification
+==============
+
+* Construct a label by discretisation of an attribute (this label can be built by clustering the values of this attribute). Use this label as class label.
+
+* Compare the results obtained using decision trees and the K nearest neighbors.
+
+* Evaluate the quality of the model using cross validation. Report the score for each subset and the global score.
+
+* Modify the learning parameters to detect of possible overfitting.
+
+
+Remarks:
+
+- A contingency table can be use to analyse the errors by class.
+
+- Removing outliers can reduce error.
+
+- A classification model can be use to predict labels of a targeted attribute for objects where this attribute value is missing.
+
+
+==============================================================
+Report content and format
+=========================
+
+* Keep track of the choices made and justify them.
+
+* Give commands and parameters so that the results can be reproduced.
+
+* Show in tables some views of subsets of the data, but not the complete view of all objects in the data. Give the attributes and their units, as well as the number of objects used.
+
+* Give results (values, graphics,...).
+
+* Try to interpret the results in the domain.
+
+
+Remarks:
+
+- It is possible to study several subsets of attributes (e.g., one for the clustering part, another for the classification tasks).
+
+- The report can suggest directions for future works, e.g., directions that have not been explored due to time constraints.
+
+- The document can be split in two reports: one for the clustering and one for the classification tasks.
+
+==============================================================
+How to edit the report
+======================
+
+A way to prepare the report is to add "Markdows" cells in the Jupyter notebook to insert text, and use #, ##, ###, #### for headings (section, subsection, subsubsection, paragraph). Next, to get a latex version of the notebook use: "File -> Download as -> LaTeX" (this requires Pandoc to be installed https://pandoc.org/installing.html). And then edit the .tex if needed (to add a title page, to clean some parts, ...), before compiling it.
+
+IMPORTANT 1: the end of long lines in cells containing python commands can be suppressed (due to the latex verbatim mode), to avoid this use lines of at most 80 characters and use "\" to continue the command on the next line.
+
+IMPORTANT 2: if using "File -> print preview" to generate a pdf of the notebook, then the sections will not be numbered, and check also that there is no missing part in long lines.
+
+IMPORTANT 3: "File -> Download as -> LaTeX" may not work for the graphical representation of decision trees, depending on the version of sklearn and on external installed softwares. A workaround is to generate the pdf of the tree and then to include the pdf by a latex command.
+Example, with a cell containing the code:
+graph = graphviz.Source(dot_data)
+graph # to display the tree
+
+replace the cell content by:
+graph = graphviz.Source(dot_data)
+graph.render("out_iris_decision_tree") # to generate a pdf file
+
+then just below this cell add a Markdown cell containing the following tree lines:
+\begin{center}
+\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{out_iris_decision_tree.pdf}
+\end{center}
+
+then generate the latex file with "File -> Download as -> LaTeX", put the file out_iris_decision_tree.pdf in the folder of the latex file, and compile the latex file.
+
+
+==============================================================
+Zip file to be send by mail
+===========================
+(mail to Christophe.Rigotti@insa-lyon.fr and Sergio.Peignier@insa-lyon.fr)
+
+Prepare a single folder with name the names of the authors (in lexicographic order): NAME1_NAME2. Zip this folder and send the file NAME1_NAME2.zip
+
+The folder must contains:
+
+- zip file(s) of the data file(s), (txt format to reproduce the work).
+
+- files, (txt format or pdf) containing the definitions of the variables given by the data provider.
+
+- the Jupyter notebooks (format .ipynb to reproduce the work).
+    There should be two separate notebooks:
+    1) one for the attribute/object selection and clustering sections
+    2) another one for the classification section
+
+- the report in two pdf files:
+    1) one for the attribute/object selection and clustering sections
+    2) another one for the classification section
