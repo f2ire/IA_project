@@ -14,39 +14,65 @@ from scipy import stats
 from sklearn.cluster import KMeans
 from sklearn import metrics
 import matplotlib.pyplot as plt
-#label by discretisation of an attribute
+# #label by discretisation of an attribute
 from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.cluster import KMeans
-data = pd.read_csv("data.txt", sep="\t")
-data = data.drop(data.index[-5:])
-print(data.tail())
-# on a un tableau de données nommé "data" et je discrétiser la colonne d'indice 0
+# data = pd.read_csv("data.txt", sep="\t")
+# data = data.drop(data.index[-5:])
+# print(data.tail())
+# # on a un tableau de données nommé "data" et je discrétiser la colonne d'indice 0
 
-# supposons que vous avez un tableau de données nommé "X"
-# et que vous souhaitez discrétiser la colonne d'indice 0
+# # supposons que vous avez un tableau de données nommé "X"
+# # et que vous souhaitez discrétiser la colonne d'indice 0
 
-#centroids=km.cluster_centers_ # get the cluster centers
-#print(centroids)
-discretizer = KBinsDiscretizer(n_bins=3, encode='ordinal',strategy='uniform')
-#'ordinal': les données sont encodées comme des entiers, où chaque bin est assigné à un entier unique.
-#'onehot': les données sont encodées sous forme de vecteur de taille n_bins, avec une valeur de 1 dans le bin correspondant et 0 dans les autres.
-#'binary': les données sont encodées comme des nombres binaires, avec une valeur de 1 dans le bin correspondant et -1 dans les autres.
-print(discretizer)
-#avec un data numerique
-data= [[-2, 1, -4,   -1], [-1, 2, -3, -0.5],[ 0, 3, -2,  0.5],[ 1, 4, -1,    2]]
-a=discretizer.fit(data)# compute the clusters
-print(a)
-objects = discretizer.transform(data)
-print(objects)
-#objects = discretizer.fit_transform(data[:,0].reshape(-1, 1))
+# #centroids=km.cluster_centers_ # get the cluster centers
+# #print(centroids)
+# discretizer = KBinsDiscretizer(n_bins=3, encode='ordinal',strategy='uniform')
+# #'ordinal': les données sont encodées comme des entiers, où chaque bin est assigné à un entier unique.
+# #'onehot': les données sont encodées sous forme de vecteur de taille n_bins, avec une valeur de 1 dans le bin correspondant et 0 dans les autres.
+# #'binary': les données sont encodées comme des nombres binaires, avec une valeur de 1 dans le bin correspondant et -1 dans les autres.
+# print(discretizer)
+# #avec un data numerique
+# data= [[-2, 1, -4,   -1], [-1, 2, -3, -0.5],[ 0, 3, -2,  0.5],[ 1, 4, -1,    2]]
+# a=discretizer.fit(data)# compute the clusters
+# print(a)
+# objects = discretizer.transform(data)
+# print(objects)
+# #objects = discretizer.fit_transform(data[:,0].reshape(-1, 1))
 
-km=KMeans(n_clusters=3) # create a KMeans object
+# km=KMeans(n_clusters=3) # create a KMeans object
 
-labels = km.predict()
-#labels = kmeans.fit_predict(X_binned)
+# labels = km.predict()
+# #labels = kmeans.fit_predict(X_binned)
 
-from sklearn.linear_model import LogisticRegression
+# from sklearn.linear_model import LogisticRegression
 
-# entraînez un modèle de régression logistique en utilisant les étiquettes comme étiquettes de classe
-clf = LogisticRegression()
-clf.fit(data, labels)
+# # entraînez un modèle de régression logistique en utilisant les étiquettes comme étiquettes de classe
+# clf = LogisticRegression()
+# clf.fit(data, labels)
+
+#################yanis#############
+###################################
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import importlib
+import data_managment as dm
+
+importlib.reload(dm)
+originial_df = pd.read_csv("data.txt", sep="\t")
+df = dm.build_adapted_df(originial_df);df
+
+importlib.reload(dm)
+
+df_nb_nan = dm.make_na_count(df)
+df_nb_nan.plot.hist(y="NaN_count",  label="Count of NaN")
+median = dm.compute_max_nan(df_nb_nan,0.5)
+plt.axvline(median, color='r', linestyle='dashed', linewidth=2, label="Median")
+plt.legend(loc='upper right')
+
+importlib.reload(dm)
+
+df_step1_clean = dm.del_many_na_country(df, df_nb_nan, median)
+print(df_step1_clean)
+
