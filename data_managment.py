@@ -62,6 +62,12 @@ def replace_nan_knn(df: pd.DataFrame):
     return imputed_DF
 
 
+def normalize_df(df: pd.DataFrame):
+    df_to_normalize = df.T
+    df_normalized = (df_to_normalize - df_to_normalize.mean()) / df_to_normalize.std()
+    return df_normalized.T
+
+
 if __name__ == "__main__":
     originial_df = pd.read_csv("data.txt", sep="\t")
     # df = build_adapted_df(originial_df)
