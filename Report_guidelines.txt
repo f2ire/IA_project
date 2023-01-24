@@ -10,13 +10,15 @@ The report must cover the following tasks: attribute selection, object selection
 Attribute selection
 ===================
 
-* Remove attributes containing many missing values.
+* Remove attributes containing many missing values. ---- DONE
 
-* Remove attributes that seem redundant because of strong correlations.
+* Remove attributes that seem redundant because of strong correlations. ---- DONE
 
 * Used derived attributes to exhibit variables that could be more pertinent (relative value, ratio, difference, relative variation, indicator combining several attributes, ...).
+----TODO:
 
 * Choose a subset of the dimensions to focus on some aspects and/or to simplify the interpretations. For methods that use distances, reduce the number of dimensions between 4 and 6, and standardize the data if necessary.
+----TODO:
 
 Remark: It is possible to complete the dataset with other sources.
 

@@ -1,5 +1,6 @@
 import pandas as pd
-import seaborn
+import numpy as np
+from sklearn.impute import KNNImputer
 
 
 def build_adapted_df(df: pd.DataFrame):  # TODO: Try to not hardcod
@@ -26,27 +27,25 @@ def del_many_na_country(
     """
     ax = 0 if is_colums else 1
     too_much_null = df_nb_null[df_nb_null["NaN_count"] > val_max_for_drop]
-    return df.drop(too_much_null["Series"], axis=ax)
+    new_df = df.drop(too_much_null["Series"], axis=ax)
+    return new_df
 
 
 def del_many_na_series(
     df: pd.DataFrame, df_nb_null: pd.DataFrame, val_max_for_drop: float
 ):
     too_much_null = df_nb_null[df_nb_null["NaN_count"] > val_max_for_drop]
-    return df.drop(too_much_null.index, axis=1)
+    new_df = df.drop(too_much_null.index, axis=1)
+    return new_df
 
 
-def def_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: int):
-    to_drop = []
-    to_compare = list(correlation_table.index)
-    for column in correlation_table.columns:
-        to_compare.remove(column)
-        for it in correlation_table[column].items():
-            if abs(it[1]) > 1:
-                to_drop.append(it[0])
-    print(to_drop)
-    return df.drop(to_drop, axis=0)
-    # TODO: Faire un = TRUE quand supérieur, et regarder directement dans la table
+def def_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float):
+    upper_tri = correlation_table.where(
+        np.triu(np.ones(correlation_table.shape), k=1).astype(np.bool)
+    )
+    to_drop = [column for column in upper_tri.columns if any(upper_tri[column] > limit)]
+    new_df = df.drop(to_drop, axis=0)
+    return new_df
 
 
 def make_na_count(df: pd.DataFrame, is_colums=True):
@@ -55,8 +54,12 @@ def make_na_count(df: pd.DataFrame, is_colums=True):
     return df_nb_null.to_frame("NaN_count")
 
 
-def corr_test_df(df: pd.DataFrame):
-    df_T = df.T.corr("spearman")
+def replace_nan_knn(df: pd.DataFrame):
+    imputer = KNNImputer(missing_values=np.nan)
+    imputed_DF = pd.DataFrame(imputer.fit_transform(df))
+    imputed_DF.columns = df.columns
+    imputed_DF.index = df.index
+    return imputed_DF
 
 
 if __name__ == "__main__":
