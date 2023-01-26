@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.impute import KNNImputer
+from sklearn.preprocessing import StandardScaler
 
 
 def build_adapted_df(df: pd.DataFrame):  # TODO: Try to not hardcod
@@ -62,10 +63,14 @@ def replace_nan_knn(df: pd.DataFrame):
     return imputed_DF
 
 
-def normalize_df(df: pd.DataFrame):
-    df_to_normalize = df.T
-    df_normalized = (df_to_normalize - df_to_normalize.mean()) / df_to_normalize.std()
-    return df_normalized.T
+def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
+    zscore = StandardScaler().fit(df)
+    norm_df = pd.DataFrame(zscore.transform(df), index=df.index, columns=df.columns)
+    return norm_df
+
+
+def export_clean_data(df: pd.DataFrame):
+    df.to_csv("clean_dataframe.csv")
 
 
 if __name__ == "__main__":
