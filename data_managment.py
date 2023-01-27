@@ -39,16 +39,14 @@ def del_many_na_series(
     return new_df
 
 
-def del_correled_series(
-    df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float
-):
+def del_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float):
     upper_tri = correlation_table.where(
         np.triu(np.ones(correlation_table.shape), k=1).astype(bool)
     )
     to_drop = [
         column for column in upper_tri.columns[::-1] if any(upper_tri[column] > limit)
     ]
-    new_df = df.drop(to_drop, axis=0)
+    new_df = df.drop(to_drop, axis=1)
     return new_df
 
 
