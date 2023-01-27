@@ -15,7 +15,7 @@ def build_adapted_df(df: pd.DataFrame):  # TODO: Try to not hardcod
 
 
 def del_many_na_country(
-    df: pd.DataFrame, df_nb_null: pd.DataFrame, val_max_for_drop: float, is_colums=False
+    df: pd.DataFrame, df_nb_null: pd.DataFrame, val_max_for_drop: float
 ):
     """Delete country depending of number of NaN authorized
 
@@ -26,9 +26,8 @@ def del_many_na_country(
     Returns:
         _type_: The new dataframe without contries with many NaN
     """
-    ax = 0 if is_colums else 1
-    too_much_null = df_nb_null[df_nb_null["NaN_count"] > val_max_for_drop]
-    new_df = df.drop(too_much_null["Series"], axis=ax)
+    too_much_null = df_nb_null[df_nb_null["NaN_count"] >= val_max_for_drop]
+    new_df = df.drop(too_much_null["Series"], axis=0)
     return new_df
 
 
@@ -40,7 +39,9 @@ def del_many_na_series(
     return new_df
 
 
-def del_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float):
+def del_correled_series(
+    df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float
+):
     upper_tri = correlation_table.where(
         np.triu(np.ones(correlation_table.shape), k=1).astype(bool)
     )
