@@ -7,10 +7,10 @@ from sklearn.preprocessing import StandardScaler
 def build_adapted_df(df: pd.DataFrame):  # TODO: Try to not hardcod
     df.drop(["Country Code", "Series Code"], axis=1)
     df = df.iloc[:-5]
-    val = pd.to_numeric(df.loc[:, ("2016 [YR2016]")], errors="coerce").copy()
-    ndf = df.assign(**{"2016 [YR2016]": val})
+    val = pd.to_numeric(df.loc[:, ("2018 [YR2018]")], errors="coerce").copy()
+    ndf = df.assign(**{"2018 [YR2018]": val})
     return ndf.pivot_table(
-        index="Series Name", columns="Country Name", values="2016 [YR2016]"
+        index="Series Name", columns="Country Name", values="2018 [YR2018]"
     )
 
 
@@ -40,11 +40,13 @@ def del_many_na_series(
     return new_df
 
 
-def def_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float):
+def del_correled_series(df: pd.DataFrame, correlation_table: pd.DataFrame, limit: float):
     upper_tri = correlation_table.where(
-        np.triu(np.ones(correlation_table.shape), k=1).astype(np.bool)
+        np.triu(np.ones(correlation_table.shape), k=1).astype(bool)
     )
-    to_drop = [column for column in upper_tri.columns if any(upper_tri[column] > limit)]
+    to_drop = [
+        column for column in upper_tri.columns[::-1] if any(upper_tri[column] > limit)
+    ]
     new_df = df.drop(to_drop, axis=0)
     return new_df
 
@@ -69,8 +71,8 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     return norm_df
 
 
-def export_clean_data(df: pd.DataFrame):
-    df.to_csv("clean_dataframe.csv")
+def export_clean_data(df: pd.DataFrame, file_name="clean_dataframe.csv"):
+    df.to_csv(file_name)
 
 
 if __name__ == "__main__":

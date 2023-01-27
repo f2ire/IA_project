@@ -15,10 +15,10 @@ Attribute selection
 * Remove attributes that seem redundant because of strong correlations. ---- DONE
 
 * Used derived attributes to exhibit variables that could be more pertinent (relative value, ratio, difference, relative variation, indicator combining several attributes, ...).
-----TODO:
+---- DONE
 
 * Choose a subset of the dimensions to focus on some aspects and/or to simplify the interpretations. For methods that use distances, reduce the number of dimensions between 4 and 6, and standardize the data if necessary.
-----TODO:
+---- DONE
 
 Remark: It is possible to complete the dataset with other sources.
 
@@ -28,9 +28,10 @@ Object selection
 ================
 
 * Remove objects containing missing values (except if using methods that handle clearly the missing values).
+---- DONE
 
 * Identified the outliers (exceptional objects, noise, ...) in 1D, 2D, n-dimensions. Keep track of them and eventually remove them.
-
+---- DONE
 
 ==============================================================
 Clustering
